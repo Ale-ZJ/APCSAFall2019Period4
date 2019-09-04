@@ -46,9 +46,9 @@ public class Calculate {
 		double answer = b - (4 * a * c)
 	}
 	
-	public static toImproperFrac(int whole, numerator, denominator) {
-		double newNumerator = ( denominator * whole ) + numerator;
-		
-	}
+//	public static toImproperFrac(int whole, numerator, denominator) {
+//		double newNumerator = ( denominator * whole ) + numerator;
+//		
+//	}
 	
 }
