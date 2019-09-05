@@ -42,13 +42,30 @@ public class Calculate {
 	}
 	
 	//a call to calculate the discriminant in a quadratic equation in standard from
-	public static double discriminant(double a, b, c) {
-		double answer = b - (4 * a * c)
+	public static double discriminant(double a, double b, double c) {
+		double answer = b - (4 * a * c);
+		return answer;
 	}
 	
-	public static toImproperFrac(int whole, numerator, denominator) {
-		double newNumerator = ( denominator * whole ) + numerator;
-		
+	//a call to convert a mixed number to improper fraction
+	public static String toImproperFrac(int whole, int numerator, int denominator) {
+		int newNumerator = ( denominator * whole ) + numerator;
+		return newNumerator + "/" + denominator;
 	}
 	
+	//a call to convert improper fraction into a mixed number
+	public static String toMixedNum(int numerator, int denominator) {
+		int wholeNum = numerator / denominator;
+		int newNumerator = numerator % denominator; 
+		return wholeNum + "_" + newNumerator + "/" + denominator;
+	}
+	
+	//a call to convert a binomial multiplication of the form (ax + b)(cx + d) 
+	//into quadratic form ax^2 + bx + c
+	public static String foil(int a, int b, int c, int d, String variable) {
+		int firstTerm = a * c; 
+		int secondTerm = (b * c) + (a * d);
+		int thirdTerm = b * d; 
+		return firstTerm + variable + "^2" + " + " + secondTerm + variable + " + " + thirdTerm;
+	}
 }
