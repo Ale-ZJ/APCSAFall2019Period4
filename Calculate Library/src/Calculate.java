@@ -121,15 +121,24 @@ public class Calculate {
 	
 	//a call to round a number to 2 decimal places and return a double
 	public static double round2(double decimal) {
-		double number = absValue(decimal); //so that we work w positive numbers only
-		number = (number * 100) + 0.5;     //move decimal place two places
-		number = (int)number;              //cast the decimals
-	                                       //add 0.5 so that the unit digit will go up if its <=5
-//		number = (int)number / 100;        //back to a decimal number!
-//		if (decimal < 0) {                 //dont forget that some numbers might be negative
-//			number = number * -1;
-//		}
+		double number = absValue(decimal); 	//work w positive numbers
+		number = (number * 100) + 0.5;     	//move decimal place two places right and add 0.5 
+											//will increase unit digit by one if <= 5
+		number = (int)number;              	//cast the decimals we don't want
+		number = number / 100;        		//back to a decimal number!
+		if (decimal < 0) {                 	//don't forget that some numbers might be negative
+			number = number * -1;
+		}
 		return number;
+	}
+	
+	//a call to raise a value to a positive integer
+	public static double exponent(double base, int power) {
+		double answer = 1;                		//any base to the 0 power is 1
+		for (int i = 1;  i <= power; i++) {
+			answer = answer * base;
+		}
+		return answer;
 	}
 	
 	
