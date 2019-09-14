@@ -31,8 +31,8 @@ public class Calculate {
 	
 	//a call to transform radian passed into degrees
 	public static double toDegrees(double radian) {
-		double degrees = radian * (180 / 3.14159);
-		return degrees;
+		double degree = radian * (180 / 3.14159);
+		return degree;
 	}
 	
 	//a call to transform degree passed into radian
@@ -43,18 +43,28 @@ public class Calculate {
 	
 	//a call to calculate the discriminant in a quadratic equation in standard from
 	public static double discriminant(double a, double b, double c) {
-		double answer = b - (4 * a * c);
+		double answer = (b * b) - (4 * a * c);
 		return answer;
 	}
 
 	//a call to convert a mixed number to improper fraction
 	public static String toImproperFrac(int whole, int numerator, int denominator) {
-		int newNumerator = ( denominator * whole ) + numerator;
-		return newNumerator + "/" + denominator;
+		if (denominator == 0) {
+			throw new IllegalArgumentException("division by zero is undefined, denominator:" + denominator);
+		}
+		int wholePositive =  (int)absValue(whole);
+		int newNum = ( denominator * wholePositive ) + numerator;
+		if (whole < 0) {
+			newNum = newNum * -1;
+		}
+		return newNum + "/" + denominator;
 	}
 
 	//a call to convert improper fraction into a mixed number
 	public static String toMixedNum(int numerator, int denominator) {
+		if (denominator == 0) {
+			throw new IllegalArgumentException("division by zero is undefined, denominator:" + denominator);
+		}
 		int wholeNum = numerator / denominator;
 		int newNumerator = numerator % denominator; 
 		return wholeNum + "_" + newNumerator + "/" + denominator;
@@ -71,6 +81,9 @@ public class Calculate {
 	
 	//a call to determine if one integer is divisible by another
 	public static boolean isDivisibleBy(int dividend, int divisor) {
+		if (divisor == 0) {
+			throw new IllegalArgumentException("division by zero is undefined, denominator" + divisor);
+		}
 		if (dividend % divisor == 0) {
 			return true; //it is divisible
 		} else { 
@@ -134,6 +147,9 @@ public class Calculate {
 	
 	//a call to raise a value to a positive integer
 	public static double exponent(double base, int power) {
+		if (power < 0) {
+			throw new IllegalArgumentException("method can't raise number to a negative exponent:" + power);
+		}
 		double answer = 1;                		//any base to the 0 power is 1
 		for (int i = 1;  i <= power; i++) {
 			answer = answer * base;
@@ -141,7 +157,47 @@ public class Calculate {
 		return answer;
 	}
 	
+	//a call to return the factorial of a whole number passed 
+	public static int factorial(int number) {
+		if (number < 0) {
+			throw new IllegalArgumentException("negative number:" + number);
+		}
+		int answer = 1;						//zero factorial is 1 
+		for (int factor = number; factor > 1; factor--) {
+			answer = answer * factor;
+		}
+		return answer;
+	}
 	
+	//a call to determine if a integer is a prime number
+	public static boolean isPrime(int number) {
+		boolean notPrime = false;
+		int factor = 1;
+		while (notPrime == false) {			//while no factor is found, then the number is a still a prime
+			notPrime = isDivisibleBy(number, factor);
+			factor++;
+			if (factor == number) {			//if the factor equals the number, then it is a prime
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	//a call to find the greatest common between two numbers
+	public static int gcf(int num1, int num2) {
+		int maxNum = (int)max(absValue(num1), absValue(num2)); 
+		int factor = 1;                   //if they don't share any factor then the factor is 1
+		for (int i = 1; i <= maxNum; i++) {
+			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) {
+				factor = i;
+			}
+		}
+		return factor;
+	}
+	
+	//a call to return an appoximation of the square root of value passed by two decimal places
+	public static double sqrt(double number) {
+		
+	}
 	
 }

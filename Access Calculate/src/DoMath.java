@@ -6,7 +6,7 @@
 public class DoMath {
 
 	public static void main(String[] args) {
-		System.out.println(Calculate.exponent(-5,4));
+		System.out.println(Calculate.gcf(13,23));
 	}
 
 }
