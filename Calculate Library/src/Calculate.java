@@ -185,9 +185,9 @@ public class Calculate {
 	
 	//a call to find the greatest common between two numbers
 	public static int gcf(int num1, int num2) {
-		int maxNum = (int)max(absValue(num1), absValue(num2)); 
+		int minNum = (int)min(absValue(num1), absValue(num2)); 
 		int factor = 1;                   //if they don't share any factor then the factor is 1
-		for (int i = 1; i <= maxNum; i++) {
+		for (int i = 1; i <= minNum; i++) {
 			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) {
 				factor = i;
 			}
@@ -195,9 +195,24 @@ public class Calculate {
 		return factor;
 	}
 	
-	//a call to return an appoximation of the square root of value passed by two decimal places
+	//a call to return an approximation of the square root of value passed by two decimal places
 	public static double sqrt(double number) {
-		
+		if (number < 0) {
+			throw new IllegalArgumentException("negative number:" + number);
+		}
+		double edGuess = 0;
+		boolean isAccurate = false;
+		//get educated guess to use later on
+		for (int i=0; square(i) <= number ; i++) {
+			edGuess = i;
+		}
+		//use Newton's formula to get square
+		while (isAccurate == false) {
+			edGuess = ((number/edGuess) + edGuess)/2;
+			if (number-(edGuess*edGuess) < 0.005) {
+				isAccurate = true;
+			}
+		}
+		return round2(edGuess);
 	}
-	
 }
