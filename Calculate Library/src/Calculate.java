@@ -4,7 +4,7 @@
 
 public class Calculate {
 	
-	//a call to return a square of integer passed
+	//a call to return a square of INTEGER passed
 	public static int square(int number) {
 		int answer = 0;
 		answer = number * number;
@@ -65,7 +65,7 @@ public class Calculate {
 		if (denominator == 0) {
 			throw new IllegalArgumentException("division by zero is undefined, denominator:" + denominator);
 		}
-		int wholeNum = numerator / denominator;
+		int wholeNum = numerator / denominator;	//int divided by another int cast decimals
 		int newNumerator = numerator % denominator; 
 		return wholeNum + "_" + newNumerator + "/" + denominator;
 	}
@@ -113,11 +113,11 @@ public class Calculate {
 	
 	//overloading max to accept three inputs
 	public static double max(double num1, double num2, double num3) {
-		double maxNum = num1; 
+		double maxNum = num1; 	//num1 as default maxNum so that all numbers can be compared
 		if (num1 < num2) {
 			maxNum = num2;
 		} 
-		if (maxNum < num3) { //either num1 or num2 will be maxNum here
+		if (maxNum < num3) { 	//either num1 or num2 will be maxNum here
 			maxNum = num3;
 		} 
 		return maxNum;
@@ -163,7 +163,7 @@ public class Calculate {
 			throw new IllegalArgumentException("negative number:" + number);
 		}
 		int answer = 1;						//zero factorial is 1 
-		for (int factor = number; factor > 1; factor--) {
+		for (int factor = number; factor > 1; factor--) {	//multiply backwards starting from the number
 			answer = answer * factor;
 		}
 		return answer;
@@ -171,12 +171,12 @@ public class Calculate {
 	
 	//a call to determine if a integer is a prime number
 	public static boolean isPrime(int number) {
-		boolean notPrime = false;
+		boolean notPrime = false;							//assume all inputs are prime
 		int factor = 1;
-		while (notPrime == false) {			//while no factor is found, then the number is a still a prime
-			notPrime = isDivisibleBy(number, factor);
-			factor++;
-			if (factor == number) {			//if the factor equals the number, then it is a prime
+		while (notPrime == false) {							//while no factor is found, then the number is a still a prime
+			notPrime = isDivisibleBy(number, factor);		//returns if a factor is found
+			factor++;										//increase factor AND prevents 1 to be considered a factor
+			if (factor == number || -factor == number) { 	//if the factor equals the number, then it is a prime
 				return true;
 			}
 		}
@@ -186,33 +186,57 @@ public class Calculate {
 	//a call to find the greatest common between two numbers
 	public static int gcf(int num1, int num2) {
 		int minNum = (int)min(absValue(num1), absValue(num2)); 
-		int factor = 1;                   //if they don't share any factor then the factor is 1
-		for (int i = 1; i <= minNum; i++) {
-			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) {
+		int factor = 1;                   			//if they don't share any factor then the factor is 1
+		for (int i = 1; i <= minNum; i++) {			//not necessary to check on all numbers
+			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) { //store COMMON factor
 				factor = i;
 			}
 		}
 		return factor;
 	}
 	
-	//a call to return an approximation of the square root of value passed by two decimal places
+	//a call to return an approximation of the square root of value passed by two decimal places using the Newtons method
 	public static double sqrt(double number) {
+		//throw exception at negative values
 		if (number < 0) {
 			throw new IllegalArgumentException("negative number:" + number);
 		}
+		//declaration of variables
 		double edGuess = 0;
 		boolean isAccurate = false;
 		//get educated guess to use later on
 		for (int i=0; square(i) <= number ; i++) {
+			if (square(i)==number) isAccurate = true;	//Newton's method doesnt apply for 0
 			edGuess = i;
 		}
-		//use Newton's formula to get square
+		//use Newton's formula to check educated guess
 		while (isAccurate == false) {
 			edGuess = ((number/edGuess) + edGuess)/2;
-			if (number-(edGuess*edGuess) < 0.005) {
+			if ((edGuess*edGuess)-number < 0.005) {
 				isAccurate = true;
 			}
 		}
 		return round2(edGuess);
+	}
+	
+	//a call to use coeficients of a quadratic expression in standard form and uses the quadratic formula to approximate the real roots, if any
+	public static String quadForm(int a, int b, int c) {
+		double discri = discriminant(a,b,c);	//get discriminant 
+		//declaring variables
+		String output="";
+		double root1;
+		double root2;
+		//test to see what types of roots will I get
+		if (discri < 0) { 									//negative
+			output = "no real roots";
+		} else {											//positive
+			root1 = (sqrt(discri) - b ) / (2 * a);
+			root2 = (-sqrt(discri) - b ) / (2 * a);
+			output = round2(min(root1,root2)) + " and " + round2(max(root1,root2));
+			if (root1 == root2) {							//0
+				output = round2(root1) + "";
+			}
+		}
+	return output;	
 	}
 }
