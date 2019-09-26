@@ -174,8 +174,8 @@ public class Calculate {
 		boolean notPrime = false;							//assume all inputs are prime
 		int factor = 1;
 		while (notPrime == false) {							//while no factor is found, then the number is a still a prime
-			notPrime = isDivisibleBy(number, factor);		//returns if a factor is found
-			factor++;										//increase factor AND prevents 1 to be considered a factor
+			notPrime = isDivisibleBy(number, factor);		//exits if a factor is found
+			factor++;										//increase factor AND prevents 1 to be considered a prime
 			if (factor == number || -factor == number) { 	//if the factor equals the number, then it is a prime
 				return true;
 			}
@@ -230,7 +230,7 @@ public class Calculate {
 		if (discri < 0) { 									//negative
 			output = "no real roots";
 		} else {											//positive
-			root1 = (sqrt(discri) - b ) / (2 * a);
+			root1 = (sqrt(discri) - b ) / (2 * a);			//quadratic formula
 			root2 = (-sqrt(discri) - b ) / (2 * a);
 			output = round2(min(root1,root2)) + " and " + round2(max(root1,root2));
 			if (root1 == root2) {							//0

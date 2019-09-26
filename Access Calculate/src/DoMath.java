@@ -32,7 +32,7 @@ public class DoMath {
 		System.out.println("\n---------- P A R T  3 ----------");
 		System.out.println(Calculate.exponent(-4,3));
 		System.out.println(Calculate.factorial(6));
-		System.out.println(Calculate.isPrime(-7));
+		System.out.println(Calculate.isPrime(-1));
 		System.out.println(Calculate.gcf(12,-6));
 		System.out.println(Calculate.sqrt(7));
 		
