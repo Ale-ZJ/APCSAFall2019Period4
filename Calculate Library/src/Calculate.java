@@ -239,4 +239,12 @@ public class Calculate {
 		}
 	return output;	
 	}
+	
+	public static double sqrt2(double number) {
+		double answer = 0;
+		for (double i = 0.001; (i*i - number) < 0.005; i += 0.001) {
+			answer = i;
+		}
+		return round2(answer);
+	}
 }
