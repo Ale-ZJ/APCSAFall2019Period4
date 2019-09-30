@@ -46,11 +46,11 @@ public class Quadratic {
 		if (discri < 0) { 									//negative
 			output = "none";
 		} else {											//positive
-			root1 = (sqrt(discri) - b ) / (2 * a);			//quadratic formula
-			root2 = (-sqrt(discri) - b ) / (2 * a);
-			output = round2(min(root1,root2)) + " and " + round2(max(root1,root2));
+			root1 = round2((sqrt(discri) - b ) / (2 * a));			//quadratic formula
+			root2 = round2((-sqrt(discri) - b ) / (2 * a));
+			output = min(root1,root2) + " and " + max(root1,root2);
 			if (root1 == root2) {							//0
-				output = round2(root1) + "";
+				output = root1 + "";
 			}
 		}
 	return "X-intercept(s): " + output;	
@@ -70,13 +70,27 @@ public class Quadratic {
 		return answer;
 	}
 	
-	//calculate square root of a number
+	//a call to return an approximation of the square root of value passed by two decimal places using the Newtons method
 	public static double sqrt(double number) {
-		double answer = 0;
-		for (double i = 0.001; (square(i) - number) < 0.005; i += 0.001) {
-			answer = i;
+		//throw exception at negative values
+		if (number < 0) {
+			throw new IllegalArgumentException("negative number:" + number);
 		}
-		return round2(answer);
+		//declaration of variables
+		double edGuess = 0;
+		boolean isAccurate = false;
+		//get educated guess to use later on
+		for (int i=0; square(i) <= number ; i++) {
+			if (square(i)==number) isAccurate = true;	//Newton's method doesnt apply for 0
+			edGuess = i;
+		}
+		//use Newton's formula to check educated guess
+		while (isAccurate == false) {
+			edGuess = ((number/edGuess) + edGuess)/2;
+			if ((edGuess*edGuess)-number < 0.005) {
+				isAccurate = true;				}
+			}
+		return round2(edGuess);
 	}
 	
 	//a call to calculate the discriminant in a quadratic equation in standard from
