@@ -132,6 +132,15 @@ public class Calculate {
 		return minNum;
 	}
 	
+	//a call to return minimum between two integer numbers
+		public static int min(int num1, int num2) {
+			int minNum = num1;
+			if (num1 > num2) {
+				minNum = num2; //num2 is bigger than num1
+			}
+			return minNum;
+		}
+	
 	//a call to round a number to 2 decimal places and return a double
 	public static double round2(double decimal) {
 		double number = absValue(decimal); 	//work w positive numbers
