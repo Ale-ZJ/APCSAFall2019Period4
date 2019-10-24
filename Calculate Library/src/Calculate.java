@@ -158,6 +158,8 @@ public class Calculate {
 	public static double exponent(double base, int power) {
 		if (power < 0) {
 			throw new IllegalArgumentException("method can't raise number to a negative exponent:" + power);
+		}else if (base == 0 && power == 0) {
+			throw new IllegalArgumentException("undefined math operation: " + base + " to the " + power);
 		}
 		double answer = 1;                		//any base to the 0 power is 1
 		for (int i = 1;  i <= power; i++) {
@@ -181,13 +183,16 @@ public class Calculate {
 	//a call to determine if a integer is a prime number
 	public static boolean isPrime(int number) {
 		boolean notPrime = false;							//assume all inputs are prime
-		int factor = 1;
+		if (absValue(number) == 1 ) {						//prevent 1 from being considered a prime
+			notPrime = true;
+		}
+		int factor = 2;
 		while (notPrime == false) {							//while no factor is found, then the number is a still a prime
 			notPrime = isDivisibleBy(number, factor);		//exits if a factor is found
-			factor++;										//increase factor AND prevents 1 to be considered a prime
 			if (factor == number || -factor == number) { 	//if the factor equals the number, then it is a prime
 				return true;
 			}
+			factor++;										//increase factor
 		}
 		return false;
 	}
@@ -196,6 +201,9 @@ public class Calculate {
 	public static int gcf(int num1, int num2) {
 		int minNum = (int)min(absValue(num1), absValue(num2)); 
 		int factor = 1;                   			//if they don't share any factor then the factor is 1
+		if (minNum == 0) {
+			factor = (int)max(absValue(num1), absValue(num2));
+		}
 		for (int i = 1; i <= minNum; i++) {			//not necessary to check on all numbers
 			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) { //store COMMON factor
 				factor = i;

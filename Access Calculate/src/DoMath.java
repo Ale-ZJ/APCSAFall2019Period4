@@ -21,19 +21,19 @@ public class DoMath {
 		
 		//part 2
 		System.out.println("\n---------- P A R T  2 ----------");
-		System.out.println(Calculate.isDivisibleBy(8,-2));
+		System.out.println(Calculate.isDivisibleBy(3,2));
 		System.out.println(Calculate.absValue(-0.324));
 		System.out.println(Calculate.max(2,-3));
 		System.out.println(Calculate.max(1,-976,-1442));
-		System.out.println(Calculate.min(24,22));
+		System.out.println(Calculate.min(0,15));
 		System.out.println(Calculate.round2(0.00500));
 		
 		//part 3
 		System.out.println("\n---------- P A R T  3 ----------");
-		System.out.println(Calculate.exponent(-4,3));
+		System.out.println(Calculate.exponent(0,8));
 		System.out.println(Calculate.factorial(6));
-		System.out.println(Calculate.isPrime(-1));
-		System.out.println(Calculate.gcf(12,-6));
+		System.out.println(Calculate.isPrime(1));
+		System.out.println(Calculate.gcf(0,15));
 		System.out.println(Calculate.sqrt(7));
 		
 		//part 4
