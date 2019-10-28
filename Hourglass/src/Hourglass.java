@@ -13,7 +13,7 @@ public class Hourglass {
 		print(base(size) + shape(size) + base(size));
 		if (size < 0) {									//for negative size hourglasses				
 			print("\nMaybe in the distant future, when humanity discovers all the marvelous secrets of the universe,\n"
-					+ "this program will be able to give you" + size + " amount of sand ;).\n");
+					+ "this program will be able to give you " + size + " amount of sand ;).\n");
 			throw new IllegalArgumentException("your input:" + size);
 		}
 	}

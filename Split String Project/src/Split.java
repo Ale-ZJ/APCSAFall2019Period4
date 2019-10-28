@@ -29,17 +29,17 @@ public class Split {
 
 		//What happens if you "I reallyreally likeapples".split("really") ?
 		
-		String[] outputArray = "I like apples".split(" ");
-		System.out.println(Arrays.toString(outputArray));
-		
-		String[] outputArray2 = "I really like really red apples".split(" really ");
-		System.out.println(Arrays.toString(outputArray2));
-		
-		String[] outputArray3 = "I really like really red apples".split("really");
-		System.out.println(Arrays.toString(outputArray3));
-		
-		String[] outputArray4 = "really I really like really red apples".split("really");
-		System.out.println(Arrays.toString(outputArray4));
+//		String[] outputArray = "I like apples".split(" ");
+//		System.out.println(Arrays.toString(outputArray));
+//		
+//		String[] outputArray2 = "I really like really red apples".split(" really ");
+//		System.out.println(Arrays.toString(outputArray2));
+//		
+//		String[] outputArray3 = "I really like really red apples".split("really");
+//		System.out.println(Arrays.toString(outputArray3));
+//		
+//		String[] outputArray4 = "really I really like really red apples".split("really");
+//		System.out.println(Arrays.toString(outputArray4));
 		
 //		System.out.println(part1("applespineapplesbreadlettucetomatobaconmayohambreadcheese"));
 //		System.out.println(part1("bread"));
@@ -49,37 +49,50 @@ public class Split {
 //		System.out.println(part1("breadbread"));
 //		System.out.println(part1("breadmayobreadham"));
 //		System.out.println(part1("ham"));
-		System.out.println(part1("hambreadhambreadcheesebread"));
+//		System.out.println(part1("hambreadhambreadcheesebread"));
+		System.out.println(part1("hambreadhambreadcheesebreadegg"));
+//		System.out.println(part1("hambreadbreadhambreadcheesebreadegg"));
+
+
 	}
 	
 	public static String part1(String sandwich) {
 		String[] components = sandwich.split("bread");		//return an array of all components not bread
 		String ingredients = "";
 		boolean finished = false;
+		System.out.println(Arrays.toString(components));
 		
 		int indexBread = sandwich.indexOf("bread");
 		System.out.println(indexBread);																//DELETE
 		
-		while (!finished) {
-			
-		}
-		if (indexBread != -1) {								
-			String newString = sandwich.substring(indexBread + 5);		
+		if (indexBread != -1) {	
+			while (!finished) {
+			int i=1;
+			String newString = sandwich.substring(indexBread + 5);		//cut the sandwich where first bread is
 			System.out.println(newString);                      									//DELETE
 			int anotherIndex = newString.indexOf("bread");
 			System.out.println(anotherIndex);														//DELETE
 			
-			if ( anotherIndex > 0) {					
-				ingredients += components [1];
-			} else if (anotherIndex == 0){
+			if ( anotherIndex > 0) {									//there is next bread 
+				ingredients += components [i];
+				finished = true;
+				i++;
+			} else if (anotherIndex == 0){								//there is bread right after
 				ingredients = "This is not a sandwich, you are missing the ingredients!";
+				finished = true;
+
 			} else {
 				ingredients = "This is not a sandwich";
+				finished = true;
+
 			}
-		}else {
+			}
+		}else {	//no bread found
 			ingredients = "This is not a sandwich, you forgot the bread!";
+			finished = true;
 		}
 		return ingredients;
+		
 	}
 	
 	
