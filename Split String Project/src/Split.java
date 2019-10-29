@@ -48,10 +48,12 @@ public class Split {
 //		System.out.println(part1("breadmayobread"));
 //		System.out.println(part1("breadbread"));
 //		System.out.println(part1("breadmayobreadham"));
+		System.out.println(part2("bread mayo bread ham"));
 //		System.out.println(part1("ham"));
 //		System.out.println(part1("hambreadhambreadcheesebread"));
-		System.out.println(part1("hambreadhambreadcheesebreadegg"));
+//		System.out.println(part1("hambreadhambread"));
 //		System.out.println(part1("hambreadbreadhambreadcheesebreadegg"));
+//		System.out.println(part2("apples pineapples bread lettuce tomato bacon mayo ham bread cheese"));
 
 
 	}
@@ -59,79 +61,40 @@ public class Split {
 	public static String part1(String sandwich) {
 		String[] components = sandwich.split("bread");		//return an array of all components not bread
 		String ingredients = "";
-		boolean finished = false;
 		System.out.println(Arrays.toString(components));
 		
 		int indexBread = sandwich.indexOf("bread");
 		System.out.println(indexBread);																//DELETE
 		
 		if (indexBread != -1) {	
-			while (!finished) {
-			int i=1;
 			String newString = sandwich.substring(indexBread + 5);		//cut the sandwich where first bread is
 			System.out.println(newString);                      									//DELETE
-			int anotherIndex = newString.indexOf("bread");
-			System.out.println(anotherIndex);														//DELETE
+			indexBread = newString.indexOf("bread");
+			System.out.println(indexBread);														//DELETE
 			
-			if ( anotherIndex > 0) {									//there is next bread 
-				ingredients += components [i];
-				finished = true;
-				i++;
-			} else if (anotherIndex == 0){								//there is bread right after
+			if ( indexBread > 0) {									//there is next bread 
+				ingredients += components [1];
+			} else if (indexBread == 0){								//there is bread right after
 				ingredients = "This is not a sandwich, you are missing the ingredients!";
-				finished = true;
-
 			} else {
 				ingredients = "This is not a sandwich";
-				finished = true;
-
-			}
 			}
 		}else {	//no bread found
 			ingredients = "This is not a sandwich, you forgot the bread!";
-			finished = true;
 		}
 		return ingredients;
 		
 	}
 	
-	
-	
-	
-
-
-		
-		//Your task Part 1:
-
-		/*Write a method that take in a string like
-
-		* "applespineapplesbreadlettucetomatobaconmayohambreadcheese"
-
-		* describing a sandwich.
-
-		* Use String.split to split up the sandwich by the word "bread" and return what's in the middle of
-
-		* the sandwich and ignores what's on the outside
-
-		* What if it's a fancy sandwich with multiple pieces of bread?
-
-		*/
-
-		//Your task pt 2:
-
-		/*Write a method that take in a string like
-
-		* "apples pineapples bread lettuce tomato bacon mayo ham bread cheese"
-
-		* describing a sandwich
-
-		* use String.split to split up the sandwich at the spaces, " ", and return what's in the middle of
-
-		* the sandwich and ignores what's on the outside.
-
-		* Again, what if it's a fancy sandwich with multiple pieces of bread?
-
-		*/
-
-		 
+	public static String part2(String sandwichSpaces) {
+		String[] components = sandwichSpaces.split(" ");
+		System.out.println(Arrays.toString(components));			//DELETE
+		String withoutSpace = "";
+		for (int i = 0; i < components.length; i++) {		//get each element in the array and concagtenate in string
+			withoutSpace += components[i];
+		}
+		System.out.println(withoutSpace);
+		String fillings = part1(withoutSpace);
+		return fillings;
+	}
 }
