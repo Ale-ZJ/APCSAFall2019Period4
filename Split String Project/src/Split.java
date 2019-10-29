@@ -90,7 +90,7 @@ public class Split {
 		String[] components = sandwichSpaces.split(" ");
 		System.out.println(Arrays.toString(components));			//DELETE
 		String withoutSpace = "";
-		for (int i = 0; i < components.length; i++) {		//get each element in the array and concagtenate in string
+		for (int i = 0; i < components.length; i++) {		//get each element in the array and puts in string
 			withoutSpace += components[i];
 		}
 		System.out.println(withoutSpace);
