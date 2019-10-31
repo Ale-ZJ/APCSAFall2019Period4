@@ -44,21 +44,23 @@ public class ArrayLab3 {
 	//Gives an array with num appended at the end of arr.  
 	//Assume array arr has at least one element.
 	public static int[] append(int[] arr, int num) {
-		int[] appendedArray = Arrays.copyOf(arr, arr.length + 1);
-		appendedArray[arr.length] = num;
+		int arrSize = arr.length;
+		int[] appendedArray = Arrays.copyOf(arr, arrSize + 1);
+		appendedArray[arrSize] = num;
 		return appendedArray;
 	}
 	
 	//array of integers consisting of all of the elements of arr except for the element at index idx
 	//You can assume arr has at least two elements.
 	public static int[] remove(int[] arr, int idx) {
-		int[] beforeIdx = Arrays.copyOfRange(arr, 0, idx);
-		int[] afterIdx = Arrays.copyOfRange(arr, idx + 1, arr.length);
+		int arrSize = arr.length;
+		int[] beforeIdx = Arrays.copyOfRange(arr, 0, idx);					//array of elements before the idx
+		int[] afterIdx = Arrays.copyOfRange(arr, idx + 1, arrSize);			//array of elements after
 		int[] removedArray = new int[beforeIdx.length + afterIdx.length];
 		
 		int index = 0;
 		
-		for (int element : beforeIdx) {
+		for (int element : beforeIdx) {			//store elements 
 			removedArray[index] = element;
 			index++;
 		}
@@ -85,7 +87,7 @@ public class ArrayLab3 {
 	//You can assume arr has at least one element.
 	public static void rotateRight(int[] arr) {
 		int lastElement = arr[arr.length - 1];			//stores temporarily last element
-		for (int i = arr.length - 1; i > 0; i--) {
+		for (int i = arr.length - 1; i > 0; i--) {		//last index will store previous element
 			arr[i] = arr[i - 1];
 		}
 		arr[0] = lastElement;
