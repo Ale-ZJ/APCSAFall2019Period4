@@ -26,7 +26,7 @@ public class FracCalc {
     	String operand1 = noSpace[0];
     	String operator = noSpace[1];
     	String operand2 = noSpace[2];
-    	String answer = "";
+    	int[] answer = {0, 0, 0};
     	
     	int whole1 = getWhole(operand1);
     	int num1 = getNum(operand1);
@@ -41,16 +41,14 @@ public class FracCalc {
     	int[] fraction2 = toImproperFrac(whole2, num2, den2);
     	
     	if (operator.equals("*")) {
-    		answer = multiply(fraction1, fraction2);
+    		multiply(fraction1, fraction2, answer);
     	} else if (operator.equals("/")) {
-    		answer = divide(fraction1, fraction2);
+    		divide(fraction1, fraction2, answer);
     	}else if (operator.equals("+") || (operator.equals("-"))) {
-    		answer = addition(fraction1, fraction2);
+    		addition(fraction1, fraction2, answer);
     	}
-  
     	
-    	
-        return "whole:" + wholeNum2 + " numerator:" + num2 + " denominator:" + den2;
+    	return toMixedFrac(answer);
     }
 
     //Parsing methods
@@ -82,16 +80,17 @@ public class FracCalc {
     
     
     
-    //Calculate methods 
+    //Methods that perform operations 
+    //CHECK -3_3/4, -, -2_2/4
     
-    public static void multiply(int[] fraction1, int[] fraction2) {
-    	int newNum = fraction1[1] * fraction2[1];
-    	int newDen = fraction1[2] * fraction2[2];
-    	
+    public static void multiply(int[] fraction1, int[] fraction2, int[] answer) {
+    	answer[1] = fraction1[1] * fraction2[1];
+    	answer[2] = fraction1[2] * fraction2[2];
     }
     
-    public static void division(int[] fraction1, int[] fraction2) {
-    	multiply(fraction1, reciprocal(fraction2));
+    public static void divide(int[] fraction1, int[] fraction2, int[] answer) {
+    	reciprocal(fraction2);
+    	multiply(fraction1, fraction2, answer);
     }
     
     public static void reciprocal(int[] frac) {
@@ -100,23 +99,13 @@ public class FracCalc {
     	frac[2] = newDen;
     }
     
-    public static void addition(int[] fraction1, int[] fraction2) {
+    public static void addition(int[] fraction1, int[] fraction2, int[] answer) {
     	int lcmNum = lcm(fraction1[2], fraction2[2]);
-    	int newNum = (lcmNum / fraction1[2] * fraction1[1]) + (lcmNum / fraction2[2] * fraction2[1]);
-    	
+    	answer[1] = (lcmNum / fraction1[2] * fraction1[1]) + (lcmNum / fraction2[2] * fraction2[1]);
+    	answer[2] = lcmNum;
     }
     
     
-    
-    public static int[] toImproperFrac(int whole, int numerator, int denominator) {
-		int wholePositive =  Math.abs(whole);
-		int newNum = ( denominator * wholePositive ) + numerator;
-		if (whole < 0) {
-			newNum = newNum * -1;
-		}
-		int[] improper = {0, newNum, denominator};
-		return improper;
-	}
     
     public static int lcm(int num1, int num2) {
     	int gcfNum = gcf(num1, num2);
@@ -125,10 +114,10 @@ public class FracCalc {
     
     //a call to find the greatest common between two numbers
   	public static int gcf(int num1, int num2) {
-  		int minNum = (int)min(Math.abs(num1), Math.abs(num2)); 
+  		int minNum = Math.min(Math.abs(num1), Math.abs(num2)); 
   		int factor = 1;                   			//if they don't share any factor then the factor is 1
   		if (minNum == 0) {
-  			factor = (int)max(absValue(num1), absValue(num2));
+  			factor = Math.max(Math.abs(num1), Math.abs(num2));
   		}
   		for (int i = 1; i <= minNum; i++) {			//not necessary to check on all numbers
   			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) { //store COMMON factor
@@ -150,8 +139,29 @@ public class FracCalc {
   		}
   	}
   	
-  	public static String toMixedFrac(int[] answer) {
-  		simplify(int[]);
+  	public static int[] toImproperFrac(int whole, int num, int denominator) {
+	int wholePositive =  Math.abs(whole);
+	int newNum = ( denominator * wholePositive ) + num;
+	if (whole < 0) {
+		newNum = newNum * -1;
+	}
+	int[] improper = {0, newNum, denominator};
+	return improper;
+}
+
+	public static String toMixedFrac(int[] answer) {
+  		simplify(answer);
+  		int num = answer[1];
+  		int den = answer[2];
+  		int wholeNum = num / den;	//int divided by another int cast decimals
+		int newNum = num % den; 
+		return wholeNum + "_" + newNum + "/" + den;
+  	}
+  	
+  	public static void simplify(int[] frac) {
+  		int gcfNum = gcf(frac[1], frac[2]);
+  		frac[1] = frac[1] / gcfNum;
+  		frac[2] = frac[2] / gcfNum;
   		
   	}
   		
