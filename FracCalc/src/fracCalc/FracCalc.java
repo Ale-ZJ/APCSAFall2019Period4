@@ -17,7 +17,8 @@ public class FracCalc {
 	    	System.out.println(operation);
 	    	System.out.println("result: " + produceAnswer(operation));	
     	} while (!operation.equals("quit"));
-
+    	
+    	userInput.close(); //close scanner
     }
     
     public static String produceAnswer(String input){ 
@@ -44,7 +45,10 @@ public class FracCalc {
     		multiply(fraction1, fraction2, answer);
     	} else if (operator.equals("/")) {
     		divide(fraction1, fraction2, answer);
-    	}else if (operator.equals("+") || (operator.equals("-"))) {
+    	}else if (operator.equals("+")) {
+    		addition(fraction1, fraction2, answer);
+    	}else if (operator.equals("-")) {
+    		fraction2[1] *= -1;
     		addition(fraction1, fraction2, answer);
     	}
     	
@@ -84,6 +88,8 @@ public class FracCalc {
     //CHECK -3_3/4, -, -2_2/4
     
     public static void multiply(int[] fraction1, int[] fraction2, int[] answer) {
+    	System.out.println("Frac1" + Arrays.toString(fraction1));
+    	System.out.println("Frac2" + Arrays.toString(fraction2));
     	answer[1] = fraction1[1] * fraction2[1];
     	answer[2] = fraction1[2] * fraction2[2];
     }
@@ -96,13 +102,16 @@ public class FracCalc {
     public static void reciprocal(int[] frac) {
     	int newDen = frac[1];
     	frac[1] = frac[2];
-    	frac[2] = newDen;
+    	frac[2] = Math.abs(newDen);
+    	if (newDen < 0) {
+    		frac[1] *= -1;
+    	}
     }
     
     public static void addition(int[] fraction1, int[] fraction2, int[] answer) {
-    	int lcmNum = lcm(fraction1[2], fraction2[2]);
-    	answer[1] = (lcmNum / fraction1[2] * fraction1[1]) + (lcmNum / fraction2[2] * fraction2[1]);
-    	answer[2] = lcmNum;
+//    	int lcmNum = lcm(fraction1[2], fraction2[2]);
+    	answer[1] = (fraction2[2] * fraction1[1]) + (fraction1[2] * fraction2[1]);
+    	answer[2] = fraction1[2] * fraction2[2];
     }
     
     
@@ -151,18 +160,25 @@ public class FracCalc {
 
 	public static String toMixedFrac(int[] answer) {
   		simplify(answer);
+  		System.out.println("Answer array:" + Arrays.toString(answer));				//DELETE
   		int num = answer[1];
   		int den = answer[2];
   		int wholeNum = num / den;	//int divided by another int cast decimals
 		int newNum = num % den; 
-		return wholeNum + "_" + newNum + "/" + den;
+		
+		if (newNum == 0) {			//no fraction
+			return "" + wholeNum;
+		} else if (wholeNum == 0) {
+			return newNum + "/" + den;
+		} else {
+		return wholeNum + "_" + Math.abs(newNum) + "/" + den;
+		}
   	}
   	
   	public static void simplify(int[] frac) {
   		int gcfNum = gcf(frac[1], frac[2]);
   		frac[1] = frac[1] / gcfNum;
   		frac[2] = frac[2] / gcfNum;
-  		
   	}
   		
 }
