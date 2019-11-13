@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
     FracCalcTestCheckpoint2.class,
     FracCalcTestCheckpoint3.class,
     FracCalcTestFinal.class,
+    FracCalTestFinalExtraCredit.class,
 })
 
 public class FracCalcTestALL
