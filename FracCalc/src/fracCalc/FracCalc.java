@@ -23,7 +23,30 @@ public class FracCalc {
     
     public static String produceAnswer(String input){ 
     	String[] noSpace = input.split(" ");
-    	System.out.println(Arrays.toString(noSpace));
+    	System.out.println("split on space:" + Arrays.toString(noSpace));				//DELETE for checking purposes
+    	int startIdx;
+    	int noSpaceSize = noSpace.length;
+    	int[] answer = {0,0,0};
+    	
+    	while (noSpaceSize > 1) {														//do while the array contains one element
+    		for (int i = 1; i < noSpaceSize; i += 2) {									//check for the operator
+    			String operator = noSpace[i];
+    			
+        		if (operator.equals("*") || (operator.equals("/"))) {					//mdas
+        			startIdx = i - 1; 
+        			int[] fraction1 = getFraction(noSpace[startIdx]);
+        			int[] fraction2 = getFraction(noSpace[startIdx + 2]);
+        			
+        			if (operator.equals("*")) {
+        	    		multiply(fraction1, fraction2, answer);
+        	    		
+        	    	} else if (operator.equals("/")) {
+        	    		divide(fraction1, fraction2, answer);
+        	    	}
+        		}
+        	}
+    	}
+    	
     	String operand1 = noSpace[0];
     	String operator = noSpace[1];
     	String operand2 = noSpace[2];
@@ -41,11 +64,7 @@ public class FracCalc {
     	
     	int[] fraction2 = toImproperFrac(whole2, num2, den2);
     	
-    	if (operator.equals("*")) {
-    		multiply(fraction1, fraction2, answer);
-    	} else if (operator.equals("/")) {
-    		divide(fraction1, fraction2, answer);
-    	}else if (operator.equals("+")) {
+    	else if (operator.equals("+")) {
     		addition(fraction1, fraction2, answer);
     	}else if (operator.equals("-")) {
     		fraction2[1] *= -1;
@@ -55,7 +74,11 @@ public class FracCalc {
     	return toMixedFrac(answer);
     }
 
-    //Parsing methods
+    //Parsing method
+    
+    public static int getFraction(String frac) {
+    	int
+    }
     public static int getWhole(String frac) {
     	if(frac.contains("/")) {	//mixed num
     		if(frac.contains("_")) {
@@ -148,6 +171,7 @@ public class FracCalc {
   		}
   	}
   	
+  	//convert fraction to improper
   	public static int[] toImproperFrac(int whole, int num, int denominator) {
 	int wholePositive =  Math.abs(whole);
 	int newNum = ( denominator * wholePositive ) + num;
@@ -180,5 +204,44 @@ public class FracCalc {
   		frac[1] = frac[1] / gcfNum;
   		frac[2] = frac[2] / gcfNum;
   	}
-  		
+  	
+//  	public static boolean checkInput(String input) {
+//  		for (int {
+//  			if (element.contains(s))
+//  		}
+//  	}
+  	
+  	//to replace answer in array 
+  	//preconditions idx tells where the operation starts
+//  	public static void replace(String[] equation, String answer, int idx) {
+//  		int arrSize = equation.length;
+//  		String[] beforeIdx = Arrays.copyOfRange(equation, 0, idx);
+//  		String[] afterIdx = Arrays.copyOfRange(equation, idx + 2, arrSize);
+//  		String[] removedArray = new int[beforeIdx.length + afterIdx.length]
+//  		
+//  		
+//  	}
+//  	
+//	//array of integers consisting of all of the elements of arr except for the element at index idx
+//	//You can assume arr has at least two elements.
+//	public static int[] remove(int[] arr, int idx) {
+//		int arrSize = arr.length;
+//		int[] beforeIdx = Arrays.copyOfRange(arr, 0, idx);					//array of elements before the idx
+//		int[] afterIdx = Arrays.copyOfRange(arr, idx + 1, arrSize);			//array of elements after
+//		int[] removedArray = new int[beforeIdx.length + afterIdx.length];
+//		
+//		int index = 0;
+//		
+//		for (int element : beforeIdx) {			//store elements 
+//			removedArray[index] = element;
+//			index++;
+//		}
+//		
+//		for (int element : afterIdx) {
+//			removedArray[index] = element;
+//			index++;
+//		}
+//		
+//		return removedArray;
+//	}
 }
