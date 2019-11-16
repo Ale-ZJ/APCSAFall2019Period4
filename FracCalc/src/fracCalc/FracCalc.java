@@ -7,6 +7,7 @@ import java.util.*;
 
 public class FracCalc {
 
+	//get input from the user and get an answer
     public static void main(String[] args) {
     	String operation = "";
     	Scanner userInput = new Scanner(System.in);
@@ -20,6 +21,7 @@ public class FracCalc {
     	userInput.close(); //close scanner
     }
     
+    //method that evaluates the input and calculates the answer 
     public static String produceAnswer(String input){ 
     	String[] equation = input.split(" ");
     	System.out.println("split on space:" + Arrays.toString(equation));				//DELETE for checking purposes
@@ -36,11 +38,12 @@ public class FracCalc {
         			int[] operand1 = getFraction(equation[startIdx]);
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
-        			if (operator.equals("*")) {
-        	    		answer = multiply(operand1, operand2);
-        	    	} else { //operator is /
-        	    		answer = divide(operand1, operand2);
-        	    	}
+        			if (operator.equals("/")) {
+        	    		reciprocal(operand2);
+        	    	} 
+        			
+        			answer = multiply(operand1, operand2);
+        			
         			equation = replace(equation, answer, startIdx);
             		System.out.println("answer:" + answer);				//DELETE for checking purposes
             		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
@@ -56,12 +59,12 @@ public class FracCalc {
         			int[] operand1 = getFraction(equation[startIdx]);
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
-        			if (operator.equals("+")) {
-        				answer = addition(operand1, operand2);
-        			}else { //operator is -
+        			if (operator.equals("-")) {
         				operand2[1] *= -1;
-        				answer = addition(operand1, operand2);
-        	    	}
+        			}
+        			
+        			answer = addition(operand1, operand2);
+        			
         			equation = replace(equation, answer, startIdx);
             		System.out.println("answer:" + answer);				//DELETE for checking purposes
             		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
@@ -72,7 +75,9 @@ public class FracCalc {
     	}
     	return answer;
     }
-
+    
+    
+    
     /* * * * * * * * * * * PARSING METHODS * * * * * * * * * * * * * * * */
     //get the int values from the string fraction passed, converts to improper fraction and stores them in an array
     public static int[] getFraction(String strFrac) {
@@ -119,29 +124,28 @@ public class FracCalc {
     	int den = fraction1[2] * fraction2[2];
     	return toMixedFrac(num, den);
     }
-    
-    public static String divide(int[] fraction1, int[] fraction2) {
-    	reciprocal(fraction2);
-    	return multiply(fraction1, fraction2);
-    }
-    
-    public static void reciprocal(int[] frac) {
-    	int newDen = frac[1];
-    	frac[1] = frac[2];
-    	frac[2] = Math.abs(newDen);
-    	if (newDen < 0) {
-    		frac[1] *= -1;
-    	}
-    }
-    
+
+    //return addition of two fractions
     public static String addition(int[] fraction1, int[] fraction2) {
     	int num = (fraction2[2] * fraction1[1]) + (fraction1[2] * fraction2[1]);
     	int den = fraction1[2] * fraction2[2];
     	return toMixedFrac(num, den);
     }
     
-  
-    //a call to find the greatest common factor between two numbers using Euclid's algorithm
+    
+    
+    /* * * * * * * * * * METHODS TO CHANGE A FRACTION * * * * * * * * * * */
+    //flip num and den 
+    public static void reciprocal(int[] frac) {
+		int newDen = frac[1];
+		frac[1] = frac[2];
+		frac[2] = Math.abs(newDen);
+		if (newDen < 0) {
+			frac[1] *= -1;
+		}
+	}
+
+	//a call to find the greatest common factor between two numbers using Euclid's algorithm
     public static int gcf(int num1, int num2){
         while(num2 != 0){
             int newNum2 = num1 % num2;
@@ -163,6 +167,7 @@ public class FracCalc {
   		return improper;
   	}
 
+  	//convert fraction to a simplified mixed
 	public static String toMixedFrac(int num, int den) {
 		//simplify the fraction 
   		int gcfNum = gcf(num, den);
@@ -183,7 +188,10 @@ public class FracCalc {
 		}
   	}
   	
-  	//replace answer on original equation array on specified index and removes the following two
+	
+	
+  	/* * * * * * * * * * METHODS TO CHANGE ORIGINAL EQUATION * * * * * * * * * */
+	//replace answer on original equation array on specified index and removes the following two
   	public static String[] replace(String[] original, String solution, int idx) {
   		original[idx] = solution; 
   		System.out.println("original:" + Arrays.toString(original));				//DELETE for checking purposes
