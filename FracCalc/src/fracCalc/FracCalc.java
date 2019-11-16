@@ -11,10 +11,9 @@ public class FracCalc {
     	String operation = "";
     	Scanner userInput = new Scanner(System.in);
     	
-    	do {
+    	do {				//loop until user says to quit
 	    	System.out.print("Operation: ");
 	    	operation = userInput.nextLine();
-	    	System.out.println(operation);
 	    	System.out.println("result: " + produceAnswer(operation));	
     	} while (!operation.equals("quit"));
     	
@@ -22,104 +21,108 @@ public class FracCalc {
     }
     
     public static String produceAnswer(String input){ 
-    	String[] noSpace = input.split(" ");
-    	System.out.println("split on space:" + Arrays.toString(noSpace));				//DELETE for checking purposes
+    	String[] equation = input.split(" ");
+    	System.out.println("split on space:" + Arrays.toString(equation));				//DELETE for checking purposes
     	int startIdx;
-    	int noSpaceSize = noSpace.length;
-    	int[] answer = {0,0,0};
+    	String answer = "";
     	
-    	while (noSpaceSize > 1) {														//do while the array contains one element
-    		for (int i = 1; i < noSpaceSize; i += 2) {									//check for the operator
-    			String operator = noSpace[i];
+    	//reduces the original equation array until there is only one element left which is the answer
+    	while (equation.length > 1) {														
+    		for (int i = 1; i < equation.length - 1; i += 2) {									//check for the operator
+    			String operator = equation[i];
     			
-        		if (operator.equals("*") || (operator.equals("/"))) {					//mdas
+        		if (operator.equals("*") || (operator.equals("/"))) {					//md in pemdas
         			startIdx = i - 1; 
-        			int[] fraction1 = getFraction(noSpace[startIdx]);
-        			int[] fraction2 = getFraction(noSpace[startIdx + 2]);
+        			int[] operand1 = getFraction(equation[startIdx]);
+        			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
         			if (operator.equals("*")) {
-        	    		multiply(fraction1, fraction2, answer);
-        	    		
-        	    	} else if (operator.equals("/")) {
-        	    		divide(fraction1, fraction2, answer);
+        	    		answer = multiply(operand1, operand2);
+        	    	} else { //operator is /
+        	    		answer = divide(operand1, operand2);
         	    	}
+        			equation = replace(equation, answer, startIdx);
+            		System.out.println("answer:" + answer);				//DELETE for checking purposes
+            		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
+            		
+            		i = -1; //reset loop
+        		}
+    		}
+        	
+    		for (int i = 1; i < equation.length - 1; i += 2) {									//check for the operator
+    			String operator = equation[i];
+        		if (operator.equals("+") || (operator.equals("-"))){
+        			startIdx = i - 1; 
+        			int[] operand1 = getFraction(equation[startIdx]);
+        			int[] operand2 = getFraction(equation[startIdx + 2]);
+        			
+        			if (operator.equals("+")) {
+        				answer = addition(operand1, operand2);
+        			}else { //operator is -
+        				operand2[1] *= -1;
+        				answer = addition(operand1, operand2);
+        	    	}
+        			equation = replace(equation, answer, startIdx);
+            		System.out.println("answer:" + answer);				//DELETE for checking purposes
+            		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
+            		
+            		i = -1; //reset loop
         		}
         	}
     	}
-    	
-    	String operand1 = noSpace[0];
-    	String operator = noSpace[1];
-    	String operand2 = noSpace[2];
-    	int[] answer = {0, 0, 0};
-    	
-    	int whole1 = getWhole(operand1);
-    	int num1 = getNum(operand1);
-    	int den1 = getDen(operand1);
-    	
-    	int[] fraction1 = toImproperFrac(whole1, num1, den1);
-    	
-    	int whole2 = getWhole(operand2);
-    	int num2 = getNum(operand2);
-    	int den2 = getDen(operand2);
-    	
-    	int[] fraction2 = toImproperFrac(whole2, num2, den2);
-    	
-    	else if (operator.equals("+")) {
-    		addition(fraction1, fraction2, answer);
-    	}else if (operator.equals("-")) {
-    		fraction2[1] *= -1;
-    		addition(fraction1, fraction2, answer);
-    	}
-    	
-    	return toMixedFrac(answer);
+    	return answer;
     }
 
-    //Parsing method
-    
-    public static int getFraction(String frac) {
-    	int
-    }
-    public static int getWhole(String frac) {
-    	if(frac.contains("/")) {	//mixed num
-    		if(frac.contains("_")) {
-        		return Integer.parseInt(frac.substring(0, frac.indexOf("_")));
+    /* * * * * * * * * * * PARSING METHODS * * * * * * * * * * * * * * * */
+    //get the int values from the string fraction passed, converts to improper fraction and stores them in an array
+    public static int[] getFraction(String strFrac) {
+    	int whole = 0; 
+    	int num = 0; 
+    	int den = 1; 
+    	
+    	if(strFrac.contains("/")) {					//there is a fraction 
+    		num = getNum(strFrac);
+    		den = getDen(strFrac);
+    		if(strFrac.contains("_")) {				//there is a whole w the fraction 
+    			whole = getWhole(strFrac);
     		}
-    		return 0;
+    	}else {										//it is only the whole
+    		whole = Integer.parseInt(strFrac);
     	}
-    	return Integer.parseInt(frac); //fraction and there is no mixed num
+    	
+    	int[] intFraction = toImproperFrac(whole, num, den);
+    	return intFraction;
+    }
+    
+    public static int getWhole(String frac) {
+        return Integer.parseInt(frac.substring(0, frac.indexOf("_")));
     }
     
     public static int getNum(String frac) {
-    	if(frac.contains("/")) {
+    	if(frac.contains("_")) {					//it is mixed
     		return Integer.parseInt(frac.substring(frac.indexOf("_") + 1, frac.indexOf("/")));
-    	} else { //whole num
-    		return 0;
+    	} else {   									//only fraction 
+    		return Integer.parseInt(frac.substring(0, frac.indexOf("/")));
     	}
     }
     
     public static int getDen(String frac) {
-    	if(frac.contains("/")) {
-    		return Integer.parseInt(frac.substring(frac.indexOf("/") + 1));
-    	} else { //whole num
-    		return 1;
-    	}
+    	return Integer.parseInt(frac.substring(frac.indexOf("/") + 1));
     }
     
     
     
-    //Methods that perform operations 
-    //CHECK -3_3/4, -, -2_2/4
-    
-    public static void multiply(int[] fraction1, int[] fraction2, int[] answer) {
-    	System.out.println("Frac1" + Arrays.toString(fraction1));
-    	System.out.println("Frac2" + Arrays.toString(fraction2));
-    	answer[1] = fraction1[1] * fraction2[1];
-    	answer[2] = fraction1[2] * fraction2[2];
+    /* * * * * * * * * * * OPERATION METHODS * * * * * * * * * * */
+    //return product of two fractions 
+    public static String multiply(int[] fraction1, int[] fraction2) {    	
+    	int num = fraction1[1] * fraction2[1];
+    	int den = fraction1[2] * fraction2[2];
+    	return toMixedFrac(num, den);
     }
     
-    public static void divide(int[] fraction1, int[] fraction2, int[] answer) {
+    public static String divide(int[] fraction1, int[] fraction2) {
     	reciprocal(fraction2);
-    	multiply(fraction1, fraction2, answer);
+    	return multiply(fraction1, fraction2);
     }
     
     public static void reciprocal(int[] frac) {
@@ -131,63 +134,44 @@ public class FracCalc {
     	}
     }
     
-    public static void addition(int[] fraction1, int[] fraction2, int[] answer) {
-//    	int lcmNum = lcm(fraction1[2], fraction2[2]);
-    	answer[1] = (fraction2[2] * fraction1[1]) + (fraction1[2] * fraction2[1]);
-    	answer[2] = fraction1[2] * fraction2[2];
+    public static String addition(int[] fraction1, int[] fraction2) {
+    	int num = (fraction2[2] * fraction1[1]) + (fraction1[2] * fraction2[1]);
+    	int den = fraction1[2] * fraction2[2];
+    	return toMixedFrac(num, den);
     }
     
-    
-    
-    public static int lcm(int num1, int num2) {
-    	int gcfNum = gcf(num1, num2);
-    	return num1 * num2 / gcfNum;
+  
+    //a call to find the greatest common factor between two numbers using Euclid's algorithm
+    public static int gcf(int num1, int num2){
+        while(num2 != 0){
+            int newNum2 = num1 % num2;
+            num1 = num2;
+            num2 = newNum2;
+        }
+        return Math.abs(num1);
     }
-    
-    //a call to find the greatest common between two numbers
-  	public static int gcf(int num1, int num2) {
-  		int minNum = Math.min(Math.abs(num1), Math.abs(num2)); 
-  		int factor = 1;                   			//if they don't share any factor then the factor is 1
-  		if (minNum == 0) {
-  			factor = Math.max(Math.abs(num1), Math.abs(num2));
-  		}
-  		for (int i = 1; i <= minNum; i++) {			//not necessary to check on all numbers
-  			if (isDivisibleBy(num1, i) == true && isDivisibleBy(num2, i) == true) { //store COMMON factor
-  				factor = i;
-  			}
-  		}
-  		return factor;
-  	}
-  	
-  //a call to determine if one integer is divisible by another
-  	public static boolean isDivisibleBy(int dividend, int divisor) {
-  		if (divisor == 0) {
-  			throw new IllegalArgumentException("division by zero is undefined, denominator" + divisor);
-  		}
-  		if (dividend % divisor == 0) {
-  			return true; //it is divisible
-  		} else { 
-  			return false; 
-  		}
-  	}
   	
   	//convert fraction to improper
-  	public static int[] toImproperFrac(int whole, int num, int denominator) {
-	int wholePositive =  Math.abs(whole);
-	int newNum = ( denominator * wholePositive ) + num;
-	if (whole < 0) {
-		newNum = newNum * -1;
-	}
-	int[] improper = {0, newNum, denominator};
-	return improper;
-}
+  	public static int[] toImproperFrac(int whole, int num, int den) {
+  		int wholePositive =  Math.abs(whole);
+  		int newNum = ( den * wholePositive ) + num;
+  		if (whole < 0) {
+  			newNum = newNum * -1;
+  		}
+  		int[] improper = {0, newNum, den};
+  		
+  		return improper;
+  	}
 
-	public static String toMixedFrac(int[] answer) {
-  		simplify(answer);
-  		System.out.println("Answer array:" + Arrays.toString(answer));				//DELETE
-  		int num = answer[1];
-  		int den = answer[2];
-  		int wholeNum = num / den;	//int divided by another int cast decimals
+	public static String toMixedFrac(int num, int den) {
+		//simplify the fraction 
+  		int gcfNum = gcf(num, den);
+  		num /= gcfNum;
+  		den /= gcfNum;
+  		
+  		System.out.println("improper:" + num + "/" + den);								//DELETE for checking purpose
+  		  		
+  		int wholeNum = num / den;	//int divided by int cast decimals
 		int newNum = num % den; 
 		
 		if (newNum == 0) {			//no fraction
@@ -199,49 +183,34 @@ public class FracCalc {
 		}
   	}
   	
-  	public static void simplify(int[] frac) {
-  		int gcfNum = gcf(frac[1], frac[2]);
-  		frac[1] = frac[1] / gcfNum;
-  		frac[2] = frac[2] / gcfNum;
+  	//replace answer on original equation array on specified index and removes the following two
+  	public static String[] replace(String[] original, String solution, int idx) {
+  		original[idx] = solution; 
+  		System.out.println("original:" + Arrays.toString(original));				//DELETE for checking purposes
+  		
+  		System.out.println("startIdx:" + idx);														//DELETE for checking purposes
+  		
+  		String[] beforeIdx = Arrays.copyOfRange(original, 0, idx + 1);
+  		System.out.println("beforeIdx:" + Arrays.toString(beforeIdx));								//DELETE for checking purposes
+  		
+  		String[] afterIdx = Arrays.copyOfRange(original, idx + 3, original.length);
+  		System.out.println("afterIdx:" + Arrays.toString(afterIdx));								//DELETE for checking purposes
+  		
+  		String[] newArr = new String[beforeIdx.length + afterIdx.length];
+  		
+  		int index = 0;
+		
+		for (String element : beforeIdx) {			//store elements 
+			newArr[index] = element;
+			index++;
+		}
+		
+		for (String element : afterIdx) {
+			newArr[index] = element;
+			index++;
+		}
+		
+		return newArr;
   	}
-  	
-//  	public static boolean checkInput(String input) {
-//  		for (int {
-//  			if (element.contains(s))
-//  		}
-//  	}
-  	
-  	//to replace answer in array 
-  	//preconditions idx tells where the operation starts
-//  	public static void replace(String[] equation, String answer, int idx) {
-//  		int arrSize = equation.length;
-//  		String[] beforeIdx = Arrays.copyOfRange(equation, 0, idx);
-//  		String[] afterIdx = Arrays.copyOfRange(equation, idx + 2, arrSize);
-//  		String[] removedArray = new int[beforeIdx.length + afterIdx.length]
-//  		
-//  		
-//  	}
-//  	
-//	//array of integers consisting of all of the elements of arr except for the element at index idx
-//	//You can assume arr has at least two elements.
-//	public static int[] remove(int[] arr, int idx) {
-//		int arrSize = arr.length;
-//		int[] beforeIdx = Arrays.copyOfRange(arr, 0, idx);					//array of elements before the idx
-//		int[] afterIdx = Arrays.copyOfRange(arr, idx + 1, arrSize);			//array of elements after
-//		int[] removedArray = new int[beforeIdx.length + afterIdx.length];
-//		
-//		int index = 0;
-//		
-//		for (int element : beforeIdx) {			//store elements 
-//			removedArray[index] = element;
-//			index++;
-//		}
-//		
-//		for (int element : afterIdx) {
-//			removedArray[index] = element;
-//			index++;
-//		}
-//		
-//		return removedArray;
-//	}
+
 }
