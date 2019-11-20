@@ -220,5 +220,28 @@ public class FracCalc {
 		
 		return newArr;
   	}
+  	
+  	public static boolean checkInput(String[] input) {
+  		boolean noProb = true;
+  		
+  		ArrayList<String> invalidOp = new ArrayList<>(Arrays.asList("/0"));
+  		ArrayList<String> op = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
+  		
+  		
+  		for(int i = 0; i < input.length; i++) {
+  			//check for operators
+  			if (i % 2 != 0) {		//if odd number
+  	  			if (!op.contains(input[i])) {
+  	  				noProb = false;
+  	  			}
+  	  			if (input[i].equals("/")){
+  	  				if (input[i + 1].equals("0")) {
+  	  					noProb = false;
+  	  				}
+  	  			}
+  	  		}
+  		}
+  		return noProb;
+  	}
 
 }
