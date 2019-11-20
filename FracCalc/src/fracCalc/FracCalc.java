@@ -240,6 +240,9 @@ public class FracCalc {
   	  				}
   	  			}
   	  		}
+  			
+  			//check for only fractions inside
+  			if (input[i].)
   		}
   		return noProb;
   	}
