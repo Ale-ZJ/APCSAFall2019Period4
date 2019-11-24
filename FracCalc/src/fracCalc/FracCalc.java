@@ -221,30 +221,37 @@ public class FracCalc {
 		return newArr;
   	}
   	
-  	public static boolean checkInput(String[] input) {
-  		boolean noProb = true;
+  	public static String checkInput(String[] input) {
+  		boolean noProb = false;
   		
   		ArrayList<String> invalidOp = new ArrayList<>(Arrays.asList("/0"));
   		ArrayList<String> op = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
+  		ArrayList<Character> letters = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e'));
   		
-  		
-  		for(int i = 0; i < input.length; i++) {
-  			//check for operators
-  			if (i % 2 != 0) {		//if odd number
-  	  			if (!op.contains(input[i])) {
-  	  				noProb = false;
-  	  			}
-  	  			if (input[i].equals("/")){
-  	  				if (input[i + 1].equals("0")) {
-  	  					noProb = false;
-  	  				}
-  	  			}
-  	  		}
+  		while(input.length > 3) {
+  			for(int i = 1; i < input.length; i+=2) { //odd
+  				if(!op.contains(input[i])) {
+  					return "Error: Spacing might be wrong";
+  				}
+  			} 
   			
-  			//check for only fractions inside
-  			if (input[i].)
+  			for(int i = 0; i < input.length; i+=2) { //even
+  				int underscoreIdx = input[i].indexOf('_');
+  				int slashIdx = input[i].indexOf('/');
+  				
+  				if (underscoreIdx > 0) {
+  					if(input[i].length() < 5) {
+  						return "Error: incomplete";
+  					}
+  				} else if (slashIdx > 0) {
+  					if (input[i].length() < 3) {
+  						return "Error: incomplete fraction";
+  					}
+  				}
+  			}
+  			return "";
   		}
-  		return noProb;
+
   	}
 
 }
