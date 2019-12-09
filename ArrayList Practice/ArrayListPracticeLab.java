@@ -3,6 +3,7 @@
 //Project to practice ArrayList
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ArrayListPracticeLab 
 {
@@ -17,10 +18,11 @@ public class ArrayListPracticeLab
 	
 	//accepts an array of String and returns an ArrayList containing those Strings
 	public static ArrayList<String> convertArrayToList(String[] array) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
+		ArrayList<String> list = new ArrayList<String>(Arrays.asList(array));
+//		ArrayList<String> list = new ArrayList<String>();
+//		for (int i = 0; i < array.length; i++) {
+//			list.add(array[i]);
+//		}
 		return list;
 	}
 	
