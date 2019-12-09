@@ -39,7 +39,6 @@ public class FracCalc {
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
         			if (operator.equals("/")) reciprocal(operand2);
-        	    	
         			answer = multiply(operand1, operand2);
         			equation = replace(equation, answer, startIdx);
             		
@@ -55,7 +54,6 @@ public class FracCalc {
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
         			if (operator.equals("-")) operand2[1] *= -1;
-        			
         			answer = addition(operand1, operand2);
         			equation = replace(equation, answer, startIdx);
             		
@@ -71,9 +69,7 @@ public class FracCalc {
     /* * * * * * * * * * * PARSING METHODS * * * * * * * * * * * * * * * */
     //get the int values from the string fraction passed, converts to improper fraction and stores them in an array
     public static int[] getFraction(String strFrac) {
-    	int whole = 0; 
-    	int num = 0; 
-    	int den = 1; 
+    	int whole = 0; int num = 0; int den = 1; 
     	
     	if(strFrac.contains("/")) {					//there is a fraction 
     		num = getNum(strFrac);
@@ -94,11 +90,8 @@ public class FracCalc {
     }
     
     public static int getNum(String frac) {
-    	if(frac.contains("_")) {					//it is mixed
-    		return Integer.parseInt(frac.substring(frac.indexOf("_") + 1, frac.indexOf("/")));
-    	} else {   									//only fraction 
-    		return Integer.parseInt(frac.substring(0, frac.indexOf("/")));
-    	}
+    	if(frac.contains("_")) return Integer.parseInt(frac.substring(frac.indexOf("_") + 1, frac.indexOf("/")));
+    	else return Integer.parseInt(frac.substring(0, frac.indexOf("/")));
     }
     
     public static int getDen(String frac) {
@@ -178,7 +171,6 @@ public class FracCalc {
   		String[] newArr = new String[beforeIdx.length + afterIdx.length];
   		
   		int index = 0;
-		
 		for (String element : beforeIdx) {			//store elements 
 			newArr[index] = element;
 			index++;
@@ -187,7 +179,6 @@ public class FracCalc {
 			newArr[index] = element;
 			index++;
 		}
-		
 		return newArr;
   	}
   	
@@ -200,9 +191,7 @@ public class FracCalc {
   		
   		//if input is a non-digit except for -, /, +, *, _, " "
   		if(input.matches(".*([\\D&&[^-|/|\\+|\\*|_| ]]).*")){
-  			if(!input.equals("quit")) {
-  				System.out.println("Error: invalid input");
-  			}
+  			if(!input.equals("quit")) System.out.println("Error: invalid input");
   			noError = false;
   			
   		}else if(input.contains("/0")) {
