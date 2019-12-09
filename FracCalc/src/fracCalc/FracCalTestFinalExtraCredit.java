@@ -37,6 +37,8 @@ public class FracCalTestFinalExtraCredit {
     @Test public void ErrorHandling10() {assertTrue(FracCalc.produceAnswer("100 / 10_").toLowerCase().contains("error"));}
     @Test public void ErrorHandling11() {assertTrue(FracCalc.produceAnswer("1/32 -1/8").toLowerCase().contains("error"));}
     @Test public void ErrorHandling12() {assertTrue(FracCalc.produceAnswer("( + 0 / 0 / /0 / 0// 0 // / )").toLowerCase().contains("error"));}
+    //what about 5 + 4_/2
+    
     // Division by zero errors (Also error handling)
     @Test public void DivByZero1() {assertTrue(FracCalc.produceAnswer("1/0 + 1").toLowerCase().contains("error"));}
     @Test public void DivByZero2() {assertTrue(FracCalc.produceAnswer("12 + 15_3/0").toLowerCase().contains("error"));}

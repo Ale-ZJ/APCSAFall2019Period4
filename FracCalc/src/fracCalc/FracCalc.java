@@ -8,66 +8,56 @@ import java.util.*;
 public class FracCalc {
 
 	//get input from the user and get an answer
-    public static void main(String[] args) {
-    	String operation = "";
-    	Scanner userInput = new Scanner(System.in);
-    	
-    	do {				//loop until user says to quit
-	    	System.out.print("Operation: ");
-	    	operation = userInput.nextLine();
-	    	System.out.println("result: " + produceAnswer(operation));	
-    	} while (!operation.equals("quit"));
-    	
-    	userInput.close(); //close scanner
-    }
+	public static void main(String[] args){
+		String operation = "";
+		Scanner userInput = new Scanner(System.in);
+
+		do{ 
+			System.out.print("Operation: ");
+			operation = userInput.nextLine();
+			if(inputChecked(operation)){
+				System.out.println("Result: " + produceAnswer(operation));
+			}
+		} while(!operation.equals("quit"));
+
+		userInput.close();
+	}
     
     //method that evaluates the input and calculates the answer 
     public static String produceAnswer(String input){ 
     	String[] equation = input.split(" ");
-    	System.out.println("split on space:" + Arrays.toString(equation));				//DELETE for checking purposes
     	int startIdx;
     	String answer = "";
     	
     	//reduces the original equation array until there is only one element left which is the answer
     	while (equation.length > 1) {														
-    		for (int i = 1; i < equation.length - 1; i += 2) {									//check for the operator
+    		for (int i = 1; i < equation.length - 1; i += 2) {						//check for the operator
     			String operator = equation[i];
-    			
-        		if (operator.equals("*") || (operator.equals("/"))) {					//md in pemdas
+        		if (operator.equals("*") || (operator.equals("/"))) {				//md in pemdas
         			startIdx = i - 1; 
         			int[] operand1 = getFraction(equation[startIdx]);
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
-        			if (operator.equals("/")) {
-        	    		reciprocal(operand2);
-        	    	} 
-        			
+        			if (operator.equals("/")) reciprocal(operand2);
+        	    	
         			answer = multiply(operand1, operand2);
-        			
         			equation = replace(equation, answer, startIdx);
-            		System.out.println("answer:" + answer);				//DELETE for checking purposes
-            		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
             		
             		i = -1; //reset loop
         		}
     		}
         	
-    		for (int i = 1; i < equation.length - 1; i += 2) {									//check for the operator
+    		for (int i = 1; i < equation.length - 1; i += 2) {						//check for the operator
     			String operator = equation[i];
-        		if (operator.equals("+") || (operator.equals("-"))){
+    			if (operator.equals("+") || (operator.equals("-"))){				//as in pemdas
         			startIdx = i - 1; 
         			int[] operand1 = getFraction(equation[startIdx]);
         			int[] operand2 = getFraction(equation[startIdx + 2]);
         			
-        			if (operator.equals("-")) {
-        				operand2[1] *= -1;
-        			}
+        			if (operator.equals("-")) operand2[1] *= -1;
         			
         			answer = addition(operand1, operand2);
-        			
         			equation = replace(equation, answer, startIdx);
-            		System.out.println("answer:" + answer);				//DELETE for checking purposes
-            		System.out.println("after replace:" + Arrays.toString(equation) + "\n");				//DELETE for checking purposes
             		
             		i = -1; //reset loop
         		}
@@ -140,9 +130,7 @@ public class FracCalc {
 		int newDen = frac[1];
 		frac[1] = frac[2];
 		frac[2] = Math.abs(newDen);
-		if (newDen < 0) {
-			frac[1] *= -1;
-		}
+		if (newDen < 0) frac[1] *= -1;
 	}
 
 	//a call to find the greatest common factor between two numbers using Euclid's algorithm
@@ -157,13 +145,9 @@ public class FracCalc {
   	
   	//convert fraction to improper
   	public static int[] toImproperFrac(int whole, int num, int den) {
-  		int wholePositive =  Math.abs(whole);
-  		int newNum = ( den * wholePositive ) + num;
-  		if (whole < 0) {
-  			newNum = newNum * -1;
-  		}
+  		int newNum = ( den * Math.abs(whole) ) + num;
+  		if (whole < 0) newNum = newNum * -1;
   		int[] improper = {0, newNum, den};
-  		
   		return improper;
   	}
 
@@ -173,19 +157,13 @@ public class FracCalc {
   		int gcfNum = gcf(num, den);
   		num /= gcfNum;
   		den /= gcfNum;
-  		
-  		System.out.println("improper:" + num + "/" + den);								//DELETE for checking purpose
-  		  		
+  		  		  		
   		int wholeNum = num / den;	//int divided by int cast decimals
 		int newNum = num % den; 
 		
-		if (newNum == 0) {			//no fraction
-			return "" + wholeNum;
-		} else if (wholeNum == 0) {
-			return newNum + "/" + den;
-		} else {
-		return wholeNum + "_" + Math.abs(newNum) + "/" + den;
-		}
+		if (newNum == 0) return "" + wholeNum;
+		else if (wholeNum == 0) return newNum + "/" + den;
+		else return wholeNum + "_" + Math.abs(newNum) + "/" + den;
   	}
   	
 	
@@ -193,17 +171,10 @@ public class FracCalc {
   	/* * * * * * * * * * METHODS TO CHANGE ORIGINAL EQUATION * * * * * * * * * */
 	//replace answer on original equation array on specified index and removes the following two
   	public static String[] replace(String[] original, String solution, int idx) {
-  		original[idx] = solution; 
-  		System.out.println("original:" + Arrays.toString(original));				//DELETE for checking purposes
-  		
-  		System.out.println("startIdx:" + idx);														//DELETE for checking purposes
+  		original[idx] = solution;   		
   		
   		String[] beforeIdx = Arrays.copyOfRange(original, 0, idx + 1);
-  		System.out.println("beforeIdx:" + Arrays.toString(beforeIdx));								//DELETE for checking purposes
-  		
   		String[] afterIdx = Arrays.copyOfRange(original, idx + 3, original.length);
-  		System.out.println("afterIdx:" + Arrays.toString(afterIdx));								//DELETE for checking purposes
-  		
   		String[] newArr = new String[beforeIdx.length + afterIdx.length];
   		
   		int index = 0;
@@ -212,7 +183,6 @@ public class FracCalc {
 			newArr[index] = element;
 			index++;
 		}
-		
 		for (String element : afterIdx) {
 			newArr[index] = element;
 			index++;
@@ -221,37 +191,60 @@ public class FracCalc {
 		return newArr;
   	}
   	
-//  	public static String checkInput(String[] input) {
-//  		boolean noProb = false;
-//  		
-//  		ArrayList<String> invalidOp = new ArrayList<>(Arrays.asList("/0"));
-//  		ArrayList<String> op = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
-//  		ArrayList<Character> letters = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e'));
-//  		
-//  		while(input.length > 3) {
-//  			for(int i = 1; i < input.length; i+=2) { //odd
-//  				if(!op.contains(input[i])) {
-//  					return "Error: Spacing might be wrong";
-//  				}
-//  			} 
-//  			
-//  			for(int i = 0; i < input.length; i+=2) { //even
-//  				int underscoreIdx = input[i].indexOf('_');
-//  				int slashIdx = input[i].indexOf('/');
-//  				
-//  				if (underscoreIdx > 0) {
-//  					if(input[i].length() < 5) {
-//  						return "Error: incomplete";
-//  					}
-//  				} else if (slashIdx > 0) {
-//  					if (input[i].length() < 3) {
-//  						return "Error: incomplete fraction";
-//  					}
-//  				}
-//  			}
-//  			return "";
-//  		}
-//
-//  	}
+  	
+  	
+  	/* * * * * * * * * * ERROR CHECKING METHODS * * * * * * * * * */
+  	//checks that the input has no errors
+  	public static boolean inputChecked(String input){
+  		boolean noError = true; 
+  		
+  		//if input is a non-digit except for -, /, +, *, _, " "
+  		if(input.matches(".*([\\D&&[^-|/|\\+|\\*|_| ]]).*")){
+  			if(!input.equals("quit")) {
+  				System.out.println("Error: invalid input");
+  			}
+  			noError = false;
+  			
+  		}else if(input.contains("/0")) {
+  			System.out.println("Error: division by 0 is undefined :c");
+  			noError = false;
+  			
+  		}else {
+  			String[] array = input.split(" ");
+  	    	if (array.length < 3){ 
+  				noError = false;
+  				System.out.println("Error: couldn't find operation");
+  			}
+  			int i = 0;
+  			while(noError && i < array.length - 1){ //loop until you find an error 
+  				if (i % 2 != 0) noError = checkOdd(array[i], array[i + 1]);
+  				else noError = checkEven(array[i]);
+  				i++;
+  			}
+  	  }
+  	  return noError;
+  	}
+  	
+  	//check for the operator place
+  	public static boolean checkOdd(String operator, String operand2) {
+  		ArrayList<String> validOperators = new ArrayList<String>(Arrays.asList("*", "+", "-", "/"));
+  		if ((operator.equals("/") && operand2.matches("(\\d+)?(_)?(0)(/)?(\\d+)?"))) { //check for zero division
+  			System.out.println("Error: cannot divide by 0 :c");
+  			return false;
+  		}
+  		if (!validOperators.contains(operator)) return false;
+  		
+  		return true;
+  	}
+  	
+  	//check formating (regex pattern) of the fraction
+  	public static boolean checkEven(String value) {
+  		//if format: a_b/c or b/c or a, where a,b,c are one or more digits
+  		if (!(value.matches("-?(\\d+)(_)(\\d+)(/)(\\d+)") || value.matches("-?\\d+/\\d+") || value.matches("-?(\\d+)"))) {	
+  			System.out.println("Error: incorrect fraction format");
+  			return false;
+  		}
+  		return true;
+  	}
 
 }
