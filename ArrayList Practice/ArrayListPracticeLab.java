@@ -37,6 +37,7 @@ public class ArrayListPracticeLab
 		return longestStr;
 	}
 	
+	
 	//method to switch the order of two elements in a list
 	public static ArrayList<String> swapPairs(ArrayList<String> list){
 		ArrayList<String> swapped = new ArrayList<String>();

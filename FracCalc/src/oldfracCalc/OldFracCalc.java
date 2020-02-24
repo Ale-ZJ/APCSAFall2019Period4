@@ -2,10 +2,10 @@
 //October 28th 
 //calculator with fractions
 
-package fracCalc;
+package oldfracCalc;
 import java.util.*;
 
-public class FracCalc {
+public class OldFracCalc {
 
 	//get input from the user and get an answer
 	public static void main(String[] args){
@@ -202,7 +202,7 @@ public class FracCalc {
   			String[] array = input.split(" ");
   	    	if (array.length < 3){ 
   				noError = false;
-  				System.out.println("Error: couldn't find operation");
+  				System.out.println("Error: couldn't find operation or second operand");
   			}
   			int i = 0;
   			while(noError && i < array.length - 1){ //loop until you find an error 
